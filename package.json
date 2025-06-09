@@ -1,0 +1,32 @@
+{
+  "name": "script",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "start": "npx ts-node index",
+    "chrome": "npx ts-node chrome"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "chromedriver": "^137.0.0",
+    "dotenv": "^16.5.0",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7",
+    "selenium-webdriver": "^4.33.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.29",
+    "@types/selenium-webdriver": "^4.1.28",
+    "@typescript-eslint/eslint-plugin": "^8.34.0",
+    "@typescript-eslint/parser": "^8.34.0",
+    "eslint": "^9.28.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.4.1",
+    "prettier": "^3.5.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
