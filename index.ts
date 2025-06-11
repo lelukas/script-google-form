@@ -2,12 +2,12 @@ import { Builder, By, until } from 'selenium-webdriver'
 import chrome from 'selenium-webdriver/chrome'
 import path from 'path'
 import dados from './dados.json'
-import {checkData, checkEnv} from './utils'
+import { checkData, checkEnv } from './utils'
 import { config } from 'dotenv'
 ;(async () => {
   config()
-  await checkData(dados)
   checkEnv(process.env)
+  await checkData(dados)
 
   const inputSelector = 'input.whsOnd.zHQkBf'
   const selectOptionsSelector = 'div.OA0qNb.ncFHed.QXL7Te'
@@ -26,7 +26,7 @@ import { config } from 'dotenv'
   )
 
   const driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build()
-  await driver.executeScript(`window.open('${URL}', '_blank')`)
+  await driver.executeScript(`window.open('${process.env.URL}', '_blank')`)
   const handles = await driver.getAllWindowHandles()
   await driver.switchTo().window(handles[handles.length - 1])
   await driver.wait(until.elementLocated(By.css('input')), 10000)
