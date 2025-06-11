@@ -54,8 +54,18 @@ export const checkData = async (data: Dado[]) => {
 }
 
 export const checkEnv = (env: NodeJS.ProcessEnv) => {
-  const isEnvFilled = Object.values(env).every((key) => key)
-  if (!isEnvFilled) {
+  if (
+    env.CHROME_PATH &&
+    env.URL &&
+    env.NUCLEO &&
+    env.NOME_SECRETARIO &&
+    env.CONTATO &&
+    env.VALOR_REFERENTE &&
+    env.MUNICIPIO &&
+    env.MES
+  ) {
+    console.log('Arquivo .env válido.')
+  } else {
     throw new Error(`
       Arquivo .env não preenchido corretamente.\n
       Consulte o arquivo README para obter ajuda em como preenchê-lo.
