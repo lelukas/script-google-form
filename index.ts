@@ -32,7 +32,7 @@ import { config } from 'dotenv'
   await driver.wait(until.elementLocated(By.css('input')), 10000)
 
   const selectInSelectBlock = async (label: string, value: string) => {
-    const select = await driver.findElement(By.xpath(`//span[text()='${label}']/../../../..//*[@role="listbox"]`))
+    const select = await driver.findElement(By.xpath(`//span[b/i[text()='${label}']]/../../../..//*[@role="listbox"]`))
     await select.click()
     const selectOptions = select.findElement(By.css(selectOptionsSelector))
     await driver.executeScript('console.log(arguments[0])', selectOptions)
@@ -41,6 +41,12 @@ import { config } from 'dotenv'
     await driver.executeScript('console.log(arguments[0])', option)
     await option.click()
     await driver.sleep(500)
+  }
+
+  const selectInCheckboxBlock = async (label: string, value: string) => {
+    const container = await driver.findElement(By.xpath(`//span[b/i[text()='${label}']]/../../../..`))
+    const item = container.findElement(By.xpath(`//span[text()='${value}']`))
+    await item.click()
   }
 
   const parseValor = (valor: string) => {
@@ -63,6 +69,7 @@ import { config } from 'dotenv'
       )
       const removeFileButton = (await driver.findElements(By.xpath(`//div[@aria-label="Remover arquivo"]`)))[0]
       const valorRadio = await driver.findElement(By.xpath(`//*[text()='${process.env.VALOR_REFERENTE}']`))
+      const checkedElements = await driver.findElements(By.xpath(`//div[@aria-checked="true"]`))
 
       await nucleoInput.clear()
       await secretarioInput.clear()
@@ -70,6 +77,7 @@ import { config } from 'dotenv'
       await filiadoInput.clear()
       await valorInput.clear()
       if (removeFileButton) await removeFileButton.click()
+      if (checkedElements.length) checkedElements.forEach((element) => element.click())
 
       await nucleoInput.sendKeys(process.env.NUCLEO as string)
       await secretarioInput.sendKeys(process.env.NOME_SECRETARIO as string)
@@ -78,7 +86,7 @@ import { config } from 'dotenv'
       await selectInSelectBlock('Selecione o município', process.env.MUNICIPIO as string)
       await filiadoInput.sendKeys(dado.nome)
       await valorInput.sendKeys(`R$ ${parseValor(dado.valor)}`)
-      await selectInSelectBlock('Informe o mês de referência', process.env.MES as string)
+      await selectInCheckboxBlock('Informe o mês de referência', process.env.MES as string)
 
       await driver.findElement(By.css(fileButtonSelector)).click()
       await driver.wait(until.elementLocated(iFrameXPath))
