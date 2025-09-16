@@ -12,11 +12,11 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "chromedriver": "^137.0.0",
+    "chromedriver": "^140.0.2",
     "dotenv": "^16.5.0",
     "fs": "^0.0.1-security",
     "path": "^0.12.7",
-    "selenium-webdriver": "^4.33.0"
+    "selenium-webdriver": "^4.35.0"
   },
   "devDependencies": {
     "@types/node": "^22.15.29",
