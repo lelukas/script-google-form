@@ -93,8 +93,10 @@ import { config } from 'dotenv'
       const uploadDialogIFrame = await driver.findElement(iFrameXPath)
       await driver.switchTo().frame(uploadDialogIFrame)
       await driver.wait(until.elementLocated(By.xpath('//span[text()="Procurar"]')))
-      const uploadButton = await driver.findElement(By.xpath('//span[text()="Procurar"]/../..'))
-      const inputFile = await uploadButton.findElement(By.xpath(`.//input[@type="file"]`))
+      const inputFile = await driver.findElement(
+        By.xpath(`//div[contains(@class, 'VfPpkd-dgl2Hf-ppHlrf-sM5MNb')]/following-sibling::input[@type='file'][1]`),
+      )
+
       const filePath = path.resolve(`./comprovantes/${dado.comprovante}`)
       await inputFile.sendKeys(filePath)
 
