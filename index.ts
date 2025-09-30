@@ -2,7 +2,7 @@ import { Builder, By, until } from 'selenium-webdriver'
 import chrome from 'selenium-webdriver/chrome'
 import path from 'path'
 import dados from './dados.json'
-import { checkData, checkEnv } from './utils'
+import { checkData, checkEnv } from './src/utils'
 import { config } from 'dotenv'
 ;(async () => {
   config()
