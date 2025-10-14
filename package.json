@@ -6,7 +6,7 @@
     "build": "parcel build public/index.html",
     "serve": "npx ts-node src/server",
     "run": "npm run build && npm run serve",
-    "start": "npx ts-node src/index",
+    "start": "npx ts-node src/script",
     "chrome": "npx ts-node src/chrome",
     "check": "npx ts-node src/check"
   },
