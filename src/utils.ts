@@ -72,3 +72,12 @@ export const checkEnv = (env: NodeJS.ProcessEnv) => {
     `)
   }
 }
+
+export const checkEnvMonth = (env: NodeJS.ProcessEnv) => {
+  const date = new Date()
+  const fullMonthName = date.toLocaleString('default', { month: 'long' })
+  const envMonth = env.MES?.toLowerCase()
+  if (env.MES && !envMonth?.includes(fullMonthName)) {
+    console.warn('❗️O mês definido parece não ser o mês atual. Prossiga caso seja intencional.')
+  }
+}
