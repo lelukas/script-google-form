@@ -1,11 +1,14 @@
 {
   "name": "script",
   "version": "1.0.0",
-  "main": "index.ts",
   "scripts": {
-    "start": "npx ts-node index",
-    "chrome": "npx ts-node chrome",
-    "check": "npx ts-node check"
+    "dev": "parcel public/index.html",
+    "build": "parcel build public/index.html",
+    "serve": "npx ts-node src/server",
+    "run": "npm run build && npm run serve",
+    "start": "npx ts-node src/index",
+    "chrome": "npx ts-node src/chrome",
+    "check": "npx ts-node src/check"
   },
   "keywords": [],
   "author": "",
@@ -13,12 +16,16 @@
   "description": "",
   "dependencies": {
     "chromedriver": "^140.0.2",
+    "cors": "^2.8.5",
     "dotenv": "^16.5.0",
+    "express": "^5.1.0",
     "fs": "^0.0.1-security",
     "path": "^0.12.7",
     "selenium-webdriver": "^4.35.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
     "@types/node": "^22.15.29",
     "@types/selenium-webdriver": "^4.1.28",
     "@typescript-eslint/eslint-plugin": "^8.34.0",
@@ -26,6 +33,7 @@
     "eslint": "^9.28.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.4.1",
+    "parcel": "^2.16.0",
     "prettier": "^3.5.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
