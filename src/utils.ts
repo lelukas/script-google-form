@@ -35,7 +35,7 @@ export const checkData = async (data: Dado[]) => {
       const fileChecks = await Promise.all(files.map(fileExists))
       const filesExist = fileChecks.every(Boolean)
       if (filesExist) {
-        console.log('Arquivo data.json válido. Iniciando automação.')
+        console.log('✅ Arquivo data.json válido')
       } else {
         throw new Error(`
         Detectado arquivo inválido ou inexistente de comprovante.
@@ -64,7 +64,7 @@ export const checkEnv = (env: NodeJS.ProcessEnv) => {
     env.MUNICIPIO &&
     env.MES
   ) {
-    console.log('Arquivo .env válido.')
+    console.log('✅ Arquivo .env válido')
   } else {
     throw new Error(`
       Arquivo .env não preenchido corretamente.\n
