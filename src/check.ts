@@ -6,7 +6,7 @@ const init = async () => {
   config()
   checkEnv(process.env)
   await checkData(dados)
-  checkEnvMonth(process.env)
+  await checkEnvMonth(process.env)
 }
 
 init()
