@@ -2,12 +2,13 @@ import { Builder, By, until } from 'selenium-webdriver'
 import chrome from 'selenium-webdriver/chrome'
 import path from 'path'
 import dados from '../dados.json'
-import { checkData, checkEnv } from './utils'
+import { checkData, checkEnv, checkEnvMonth } from './utils'
 import { config } from 'dotenv'
 ;(async () => {
   config()
   checkEnv(process.env)
   await checkData(dados)
+  await checkEnvMonth(process.env)
 
   const inputSelector = 'input.whsOnd.zHQkBf'
   const selectOptionsSelector = 'div.OA0qNb.ncFHed.QXL7Te'
