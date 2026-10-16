@@ -137,3 +137,4 @@ dist
 .idea
 comprovantes/*
 !comprovantes/README
+run.log
