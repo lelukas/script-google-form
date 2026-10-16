@@ -46,7 +46,7 @@ import { config } from 'dotenv'
     const option = await selectOptions.findElement(By.xpath(`./div[@data-value="${value}"]`))
     await driver.executeScript('console.log(arguments[0])', option)
     await option.click()
-    await driver.sleep(500)
+    await driver.wait(until.elementIsNotVisible(selectOptions), 5000)
   }
 
   const selectInCheckboxBlock = async (label: string, value: string) => {
@@ -143,7 +143,8 @@ import { config } from 'dotenv'
     if (!button) return false
     log('modal de rascunho detectado, clicando em Atualizar')
     await button.click()
-    await driver.sleep(1500)
+    await driver.wait(async () => !(await draftModalButton()), 10000)
+    await driver.wait(until.elementLocated(By.css(inputSelector)), 15000)
     return true
   }
 
@@ -172,19 +173,19 @@ import { config } from 'dotenv'
       const removeFileButton = (await driver.findElements(By.xpath(`//div[@aria-label="Remover arquivo"]`)))[0]
       if (!removeFileButton) break
       await removeFileButton.click()
-      await driver.sleep(500)
+      await driver.wait(until.stalenessOf(removeFileButton), 5000)
     }
     for (let i = 0; i < 20; i++) {
       const checked = (await driver.findElements(By.xpath(`//div[@aria-checked="true" and @role="checkbox"]`)))[0]
       if (!checked) break
       await checked.click()
-      await driver.sleep(300)
+      await driver.wait(async () => (await checked.getAttribute('aria-checked')) !== 'true', 5000)
     }
   }
 
   const enviar = async (dado: (typeof dados)[number]) => {
     await driver.wait(until.elementLocated(By.css(inputSelector)), 15000)
-    await driver.sleep(2000)
+    await driver.wait(async () => (await driver.executeScript('return document.readyState')) === 'complete', 15000)
     await dismissDraftModal()
 
     await step('limpar formulário', clearForm)
@@ -217,19 +218,21 @@ import { config } from 'dotenv'
       const uploadDialogIFrame = await driver.findElement(iFrameXPath)
       await driver.switchTo().frame(uploadDialogIFrame)
       await driver.wait(until.elementLocated(By.xpath('//span[text()="Procurar"]')))
-      await driver.sleep(2000) // picker anexa os handlers depois de renderizar; setar antes é ignorado
-      // sendKeys não dispara o change do picker no Brave; setar via CDP funciona
-      await setFileViaCdp(path.resolve(`./comprovantes/${dado.comprovante}`))
       await driver.switchTo().defaultContent()
+      const pickerClosed = async () => {
+        const frames = await driver.findElements(iFrameXPath)
+        return !frames.length || !(await frames[0].isDisplayed())
+      }
+      // sem sinal no DOM de que o picker está pronto: setar o arquivo antes disso é ignorado, então espera 1s
+      // e, se o picker não fechar, tenta de novo. sendKeys não dispara o change do picker no Brave; via CDP funciona
+      await driver.sleep(1000)
+      const filePath = path.resolve(`./comprovantes/${dado.comprovante}`)
+      for (let tentativa = 1; tentativa <= 3 && !(await pickerClosed()); tentativa++) {
+        await setFileViaCdp(filePath).catch((e) => log(`  setFileViaCdp: ${e.message}`)) // sem input = picker já fechou
+        await driver.wait(pickerClosed, 8000).catch(() => undefined)
+      }
       // picker fecha sozinho após o upload; xpath antigo pegava um <iframe> invisível (opacity 0) e passava direto
-      await driver.wait(
-        async () => {
-          const frames = await driver.findElements(iFrameXPath)
-          return !frames.length || !(await frames[0].isDisplayed())
-        },
-        60000,
-        'Dialog de upload não fechou',
-      )
+      await driver.wait(pickerClosed, 60000, 'Dialog de upload não fechou')
     })
     await assertNoModal()
 
