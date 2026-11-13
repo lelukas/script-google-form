@@ -138,3 +138,5 @@ dist
 comprovantes/*
 !comprovantes/README
 run.log
+erros/
+enviados/
